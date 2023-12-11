@@ -1,0 +1,6 @@
+# should fail since macros can only call previously defined macros
+macro alpha a b c
+call beta a b c
+endmacro
+macro beta a b c
+endmacro

@@ -1,0 +1,5 @@
+# should fail since macros cannot be nested
+macro alpha a b c
+macro beta a b c
+endmacro
+endmacro

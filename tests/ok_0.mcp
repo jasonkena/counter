@@ -1,0 +1,10 @@
+# this should halt instead of looping forever, since labels are remapped
+macro alpha a
+test:
+endmacro
+
+call alpha
+inc a
+goto test
+test:
+halt

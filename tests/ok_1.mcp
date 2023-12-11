@@ -1,0 +1,372 @@
+# x is the main counter y is auxiliary
+# this decrements x by 1 while increasing y by p_i
+# NOTE: this shows that any counter program can be written using only two counters, by representing the counter values as a prime factorization
+#
+# this file in particular solves a toy three counter problem: emulated using two counters
+# input 3 counters a, b, c, calculate a = a + b + c
+# do a = a+b+c
+# i.e., feeding 2 ** 4 * 3 ** 3 * 5 ** 2 into the program should return 2 ** 9
+
+# =============================
+# NOTE: macro for prime 2
+# subroutine to increment c_i
+macro inc_2 x y
+loop_inc_2_divide:
+goto loop_inc_2_cleanup if x=0
+dec x
+inc y
+inc y
+goto loop_inc_2_divide
+
+# this sets x to y, and y to 0
+loop_inc_2_cleanup:
+goto finish if y=0
+dec y
+inc x
+goto loop_inc_2_cleanup
+
+finish:
+endmacro
+
+macro dec_2 x y
+# subroutine to decrement c_i
+# this attempts to divide x by p_i, and if it fails (c_i=0), restores to original
+loop_dec_2_divide:
+goto loop_dec_2_cleanup if x=0
+dec x
+goto loop_dec_2_fail_1 if x=0 
+# there should be p decrements in total
+dec x
+inc y
+goto loop_dec_2_divide
+
+loop_dec_2_cleanup:
+goto finish if y=0
+dec y
+inc x
+goto loop_dec_2_cleanup
+
+loop_dec_2_fail_1:
+inc x # increment _fail_# times
+goto loop_dec_2_restore
+
+loop_dec_2_restore:
+goto finish if y=0
+dec y
+inc x # (p times)
+inc x
+goto loop_dec_2_restore
+
+finish:
+endmacro
+
+# subroutine to check if c_i is 0
+# y will be 0 if c_i is 0, 1 otherwise
+# similar code to divide, but goes to yes if fails to divide (since c_i=0), goes to no otherwise, restoring x to original value in the process
+macro check_2 x y
+loop_check_2_divide:
+goto loop_check_2_restore_no if x=0
+dec x
+goto loop_check_2_fail_1 if x=0 
+# there should be p decrements in total
+dec x
+inc y
+goto loop_check_2_divide
+
+loop_check_2_fail_1:
+inc x # increment _fail_# times
+goto loop_check_2_restore_yes
+
+loop_check_2_restore_no:
+goto no if y=0
+dec y
+inc x # (p times)
+inc x
+goto loop_check_2_restore_no
+
+loop_check_2_restore_yes:
+goto yes if y=0
+dec y
+inc x
+inc x
+goto loop_check_2_restore_yes
+
+no:
+inc y
+
+yes:
+endmacro
+
+# =============================
+# NOTE: macro for prime 3
+# subroutine to increment c_i
+macro inc_3 x y
+loop_inc_3_divide:
+goto loop_inc_3_cleanup if x=0
+dec x
+inc y
+inc y
+inc y
+goto loop_inc_3_divide
+
+# this sets x to y, and y to 0
+loop_inc_3_cleanup:
+goto finish if y=0
+dec y
+inc x
+goto loop_inc_3_cleanup
+
+finish:
+endmacro
+
+macro dec_3 x y
+# subroutine to decrement c_i
+# this attempts to divide x by p_i, and if it fails (c_i=0), restores to original
+loop_dec_3_divide:
+goto loop_dec_3_cleanup if x=0
+dec x
+goto loop_dec_3_fail_1 if x=0 
+dec x
+goto loop_dec_3_fail_2 if x=0 
+dec x
+inc y
+goto loop_dec_3_divide
+
+loop_dec_3_cleanup:
+goto finish if y=0
+dec y
+inc x
+goto loop_dec_3_cleanup
+
+loop_dec_3_fail_1:
+inc x # increment _fail_# times
+goto loop_dec_3_restore
+
+loop_dec_3_fail_2:
+inc x 
+inc x 
+goto loop_dec_3_restore
+
+loop_dec_3_restore:
+goto finish if y=0
+dec y
+inc x
+inc x
+inc x
+goto loop_dec_3_restore
+
+finish:
+endmacro
+
+# subroutine to check if c_i is 0
+# y will be 0 if c_i is 0, 1 otherwise
+# similar code to divide, but goes to yes if fails to divide (since c_i=0), goes to no otherwise, restoring x to original value in the process
+macro check_3 x y
+loop_check_3_divide:
+goto loop_check_3_restore_no if x=0
+dec x
+goto loop_check_3_fail_1 if x=0 
+dec x
+goto loop_check_3_fail_2 if x=0 
+dec x
+inc y
+goto loop_check_3_divide
+
+loop_check_3_fail_1:
+inc x # increment _fail_# times
+goto loop_check_3_restore_yes
+
+loop_check_3_fail_2:
+inc x
+inc x
+goto loop_check_3_restore_yes
+
+loop_check_3_restore_no:
+goto no if y=0
+dec y
+inc x
+inc x
+inc x
+goto loop_check_3_restore_no
+
+loop_check_3_restore_yes:
+goto yes if y=0
+dec y
+inc x
+inc x
+inc x
+goto loop_check_3_restore_yes
+
+no:
+inc y
+
+yes:
+endmacro
+#
+# =============================
+# NOTE: macro for prime 5
+# subroutine to increment c_i
+macro inc_5 x y
+loop_inc_5_divide:
+goto loop_inc_5_cleanup if x=0
+dec x
+inc y
+inc y
+inc y
+inc y
+inc y
+goto loop_inc_5_divide
+
+# this sets x to y, and y to 0
+loop_inc_5_cleanup:
+goto finish if y=0
+dec y
+inc x
+goto loop_inc_5_cleanup
+
+finish:
+endmacro
+
+macro dec_5 x y
+# subroutine to decrement c_i
+# this attempts to divide x by p_i, and if it fails (c_i=0), restores to original
+loop_dec_5_divide:
+goto loop_dec_5_cleanup if x=0
+dec x
+goto loop_dec_5_fail_1 if x=0 
+dec x
+goto loop_dec_5_fail_2 if x=0 
+dec x
+goto loop_dec_5_fail_3 if x=0 
+dec x
+goto loop_dec_5_fail_4 if x=0 
+dec x
+inc y
+goto loop_dec_5_divide
+
+loop_dec_5_cleanup:
+goto finish if y=0
+dec y
+inc x
+goto loop_dec_5_cleanup
+
+loop_dec_5_fail_1:
+inc x # increment _fail_# times
+goto loop_dec_5_restore
+
+loop_dec_5_fail_2:
+inc x 
+inc x 
+goto loop_dec_5_restore
+
+loop_dec_5_fail_3:
+inc x 
+inc x 
+inc x 
+goto loop_dec_5_restore
+
+loop_dec_5_fail_4:
+inc x 
+inc x 
+inc x 
+inc x 
+goto loop_dec_5_restore
+
+loop_dec_5_restore:
+goto finish if y=0
+dec y
+inc x
+inc x
+inc x
+inc x
+inc x
+goto loop_dec_5_restore
+
+finish:
+endmacro
+
+# subroutine to check if c_i is 0
+# y will be 0 if c_i is 0, 1 otherwise
+# similar code to divide, but goes to yes if fails to divide (since c_i=0), goes to no otherwise, restoring x to original value in the process
+macro check_5 x y
+loop_check_5_divide:
+goto loop_check_5_restore_no if x=0
+dec x
+goto loop_check_5_fail_1 if x=0 
+dec x
+goto loop_check_5_fail_2 if x=0 
+dec x
+goto loop_check_5_fail_3 if x=0 
+dec x
+goto loop_check_5_fail_4 if x=0 
+dec x
+inc y
+goto loop_check_5_divide
+
+loop_check_5_fail_1:
+inc x # increment _fail_# times
+goto loop_check_5_restore_yes
+
+loop_check_5_fail_2:
+inc x
+inc x
+goto loop_check_5_restore_yes
+
+loop_check_5_fail_3:
+inc x
+inc x
+inc x
+goto loop_check_5_restore_yes
+
+loop_check_5_fail_4:
+inc x
+inc x
+inc x
+inc x
+goto loop_check_5_restore_yes
+
+loop_check_5_restore_no:
+goto no if y=0
+dec y
+inc x
+inc x
+inc x
+inc x
+inc x
+goto loop_check_5_restore_no
+
+loop_check_5_restore_yes:
+goto yes if y=0
+dec y
+inc x
+inc x
+inc x
+inc x
+inc x
+goto loop_check_5_restore_yes
+
+no:
+inc y
+
+yes:
+endmacro
+# =============================
+
+# # loop while b is not 0
+loop_decr_b:
+call check_3 a b
+goto loop_decr_c if b=0
+dec b # reset b to 0 as check_3 may increments it
+call dec_3 a b
+call inc_2 a b
+goto loop_decr_b
+
+loop_decr_c:
+call check_5 a b
+goto finish if b=0
+dec b # reset b to 0 as check_3 may increments it
+call dec_5 a b
+call inc_2 a b
+goto loop_decr_c
+finish:
+halt

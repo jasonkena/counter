@@ -1,0 +1,3 @@
+# should fail since labels should be unique
+alpha:
+alpha:
