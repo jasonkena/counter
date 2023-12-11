@@ -26,6 +26,6 @@ A few limitations:
 
 All these conditions are verified by the transpiler.
 
-The program resolves colliding labels (i.e., due to repeated macro calls) are resolved by incrementing a [hash](https://github.com/jasonkena/counter/blob/8bc9be833f9b613bbcf0b4476288f9b08988bd60/transpile_macros.py#L246C8-L246C8)). Macros are unwrapped [recursively](https://github.com/jasonkena/counter/blob/8bc9be833f9b613bbcf0b4476288f9b08988bd60/transpile_macros.py#L217).
+The program resolves colliding labels (i.e., due to repeated macro calls) by incrementing a [hash](https://github.com/jasonkena/counter/blob/8bc9be833f9b613bbcf0b4476288f9b08988bd60/transpile_macros.py#L246C8-L246C8). Macros are unwrapped [recursively](https://github.com/jasonkena/counter/blob/8bc9be833f9b613bbcf0b4476288f9b08988bd60/transpile_macros.py#L217).
 
 Sample cases are provided in `tests/`. Notably `ok_1.mcp`/`ok_1.cp` demonstrates how a 3-counter machine can be implemented using 2-counters via prime-factorization, aided by macros.
