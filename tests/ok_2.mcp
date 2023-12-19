@@ -1,0 +1,31 @@
+macro add source dest temp
+# adds addby to sum, leaving addby unchanged by the end
+# need to pass in a dummy counter temp into the function, since all variables need to be defined, keeps the behaviors of macros "pure", manipulating only passed in variables
+add_setup:
+goto add_loop if source=0
+dec source
+inc temp
+goto add_setup
+add_loop:
+goto add_finish if temp=0
+dec temp
+inc source
+inc dest
+goto add_loop
+add_finish:
+endmacro
+
+
+macro multiply x y result temp_x temp
+call add x temp_x temp
+multiply_loop:
+goto multiply_finish if temp_x=0
+dec temp_x
+call add y result temp
+goto multiply_loop
+multiply_finish:
+endmacro
+
+# multiplies a times b, storing the result in c
+call multiply a b c d e
+halt
